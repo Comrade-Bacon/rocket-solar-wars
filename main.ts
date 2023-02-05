@@ -117,9 +117,11 @@ if (player.getProperty(mp.PlayerProperty.Number) == 1 && p1ReadyToFire == true) 
 
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Player2, function(sprite: Sprite, otherSprite: Sprite) {
     if (!(sprite == p2Bullet)) {
-    sprite.destroy()
-    otherSprite.destroy(effects.fire, 100)   
-
+        sprite.destroy()
+        otherSprite.destroy(effects.fire, 100)   
+        mp.changePlayerStateBy(mp.playerSelector(mp.PlayerNumber.One), MultiplayerState.score, 1)
+        pause(1000)
+        plrSetUp(2)
 }
 })
 
@@ -127,7 +129,13 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Player1, function (sprite: S
     if (!(sprite == p1Bullet)) {
         sprite.destroy()
         otherSprite.destroy(effects.fire, 100)
-
+        mp.changePlayerStateBy(mp.playerSelector(mp.PlayerNumber.Two), MultiplayerState.score, 1)
+        pause(1000)
+        plrSetUp(1)
     }
 })
 
+
+mp.onScore(maxScore, function(player: mp.Player) {
+    mp.gameOverPlayerWin(player)
+})
