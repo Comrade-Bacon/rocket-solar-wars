@@ -1,0 +1,17 @@
+{
+    "image1": {
+        "data": "hwQKAAMAAAAgAAAAEgIAACAAAABAAAAAQAAAAEQEAAAlBQAAQgAAAAUCAABAAAAA",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "p1Shot"
+    },
+    "image2": {
+        "data": "hwQNAAUAAAAgIQAAICEAACAhAAAgIQAAMDEAADIxAgASEQIAExECABMRAwATEQMAExEDADIxAgAgIgAA",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "p2Shot"
+    },
+    "*": {
+        "mimeType": "image/x-mkcd-f4",
+        "dataEncoding": "base64",
+        "namespace": "myImages"
+    }
+}
