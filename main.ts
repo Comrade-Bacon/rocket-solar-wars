@@ -27,13 +27,13 @@ let p2Bullet: Sprite = null
 function plrSetUp(player: number){ 
     if (player == 1) {
         mp.setPlayerSprite(mp.playerSelector(mp.PlayerNumber.One), sprites.create(assets.image`p1Sprite`, SpriteKind.Player1))
-        mp.getPlayerSprite(mp.playerSelector(mp.PlayerNumber.One)).setPosition(152, 60)
+        mp.getPlayerSprite(mp.playerSelector(mp.PlayerNumber.One)).setPosition(10, 60)
         mp.moveWithButtons(mp.playerSelector(mp.PlayerNumber.One), 0, 100)
         mp.getPlayerSprite(mp.playerSelector(mp.PlayerNumber.One)).setStayInScreen(true)
 
     } else if (player == 2) {
         mp.setPlayerSprite(mp.playerSelector(mp.PlayerNumber.Two), sprites.create(assets.image`p2Sprite`, SpriteKind.Player2))
-        mp.getPlayerSprite(mp.playerSelector(mp.PlayerNumber.Two)).setPosition(10, 60)
+        mp.getPlayerSprite(mp.playerSelector(mp.PlayerNumber.Two)).setPosition(152, 60)
         mp.moveWithButtons(mp.playerSelector(mp.PlayerNumber.Two), 0, 100)
         mp.getPlayerSprite(mp.playerSelector(mp.PlayerNumber.Two)).setStayInScreen(true)
     
@@ -41,8 +41,8 @@ function plrSetUp(player: number){
         mp.setPlayerSprite(mp.playerSelector(mp.PlayerNumber.One), sprites.create(assets.image`p1Sprite`, SpriteKind.Player1))
         mp.setPlayerSprite(mp.playerSelector(mp.PlayerNumber.Two), sprites.create(assets.image`p2Sprite`, SpriteKind.Player2))
         
-        mp.getPlayerSprite(mp.playerSelector(mp.PlayerNumber.One)).setPosition(152, 60)
-        mp.getPlayerSprite(mp.playerSelector(mp.PlayerNumber.Two)).setPosition(10, 60)
+        mp.getPlayerSprite(mp.playerSelector(mp.PlayerNumber.One)).setPosition(10, 60)
+        mp.getPlayerSprite(mp.playerSelector(mp.PlayerNumber.Two)).setPosition(152, 60)
 
         mp.moveWithButtons(mp.playerSelector(mp.PlayerNumber.One), 0, 100)
         mp.moveWithButtons(mp.playerSelector(mp.PlayerNumber.Two), 0, 100)
@@ -91,7 +91,7 @@ mp.onButtonEvent(mp.MultiplayerButton.A, ControllerButtonEvent.Pressed, function
 
 if (player.getProperty(mp.PlayerProperty.Number) == 1 && p1ReadyToFire == true) { // if player one shot and cooldown is not active
     
-    p1Bullet = sprites.createProjectileFromSprite(assets.image`p1Shot`,mp.getPlayerSprite(player) , -100, 0) // shoot a projectile from player 1
+    p1Bullet = sprites.createProjectileFromSprite(assets.image`p1Shot`,mp.getPlayerSprite(player) , 100, 0) // shoot a projectile from player 1
     p1Bullet.setFlag(SpriteFlag.AutoDestroy, true) // atomaticly destroy projectile onc it leaves the screen
     
     //shot cooldown
@@ -102,7 +102,7 @@ if (player.getProperty(mp.PlayerProperty.Number) == 1 && p1ReadyToFire == true) 
 
 } else if (player.getProperty(mp.PlayerProperty.Number) == 2 && p2ReadyToFire == true){ // if player 2 shot and cooldown is not active
     
-    p2Bullet = sprites.createProjectileFromSprite(assets.image`p2Shot`, mp.getPlayerSprite(player), 100, 0) // shoot a projectile from player 2
+    p2Bullet = sprites.createProjectileFromSprite(assets.image`p2Shot`, mp.getPlayerSprite(player), -100, 0) // shoot a projectile from player 2
     p2Bullet.setFlag(SpriteFlag.AutoDestroy, true) // atomaticly destroy projectile onc it leaves the screen
     
     // shot cooldown
