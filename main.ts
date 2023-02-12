@@ -12,16 +12,23 @@ namespace SpriteKind {
 }
 
 
+
 // Global variables
 
-let isPlyin = false
-let maxScore = 5
+let isPlyin: boolean = false // is a game running (is the menue open)
+let maxScore: number = 5 // the maximum score that you can get before the game ends
 
-let p1ReadyToFire = true
-let p2ReadyToFire = true
+let p1ReadyToFire: boolean = true // player one, is shot cooldwon active
+let p2ReadyToFire: boolean = true // player two, is shot cooldwon active
 
-let p1Bullet: Sprite = null
-let p2Bullet: Sprite = null
+let p1shotcooldwn: number = 800 // player 1 cool down between shots
+let p2Shotcooldwn: number = 800 // player 2 cool down between shots
+
+let p1Bullet: Sprite = null // variable to hold the plyer one bullet sprite
+let p2Bullet: Sprite = null // variable to hold the plyer two bullet sprite
+
+let backmusic = 'on'
+
 
 // finction for seting up the player sprites
 function plrSetUp(player: number){ 
@@ -61,16 +68,27 @@ let player: mp.Player = null
 for (let index = 0; index <= 3; index++) {
     player = mp.getPlayerByIndex(index)
     if (mp.getPlayerProperty(player, mp.PlayerProperty.Number) == 1) {
-            story.showPlayerChoices("Play", "Change Max Score")
+            story.showPlayerChoices("Play", "Change Max Score", `Music ${backmusic}`)
     }
     if (story.getLastAnswer() == 'Play') { isPlyin = true } else if (story.getLastAnswer() == "Change Max Score") {
         maxScore = game.askForNumber(`Select max score. Current max score = ${maxScore}`, 3)
         mainMenue()
+    } else if (story.getLastAnswer() == `Music ${backmusic}`) {
+        if (backmusic == 'on') {
+            backmusic = 'off'
+            music.stopAllSounds()
+            mainMenue()
+        } else {
+            backmusic = 'on'
+            music.play(music.createSong(assets.song`bacground1`), music.PlaybackMode.LoopingInBackground)
+            mainMenue()
+        }
     }
 }
 
 }
 
+music.play(music.createSong(assets.song`bacground1`), music.PlaybackMode.LoopingInBackground) // play the back ground music
 mainMenue() // open the main menue
 
 pauseUntil(() => isPlyin == true) // wait untill player 1 selects play
@@ -96,7 +114,7 @@ if (player.getProperty(mp.PlayerProperty.Number) == 1 && p1ReadyToFire == true) 
     
     //shot cooldown
     p1ReadyToFire = false
-    timer.after(800, function () {
+    timer.after(p1shotcooldwn, function () { // Puase will not wrok. it will still shot even if you do not press the space bar
         p1ReadyToFire = true
     })
 
@@ -107,7 +125,7 @@ if (player.getProperty(mp.PlayerProperty.Number) == 1 && p1ReadyToFire == true) 
     
     // shot cooldown
     p2ReadyToFire = false
-    timer.after(800, function () {
+    timer.after(p2Shotcooldwn, function () { // Puase will not wrok. it will still shot even if you do not press the space bar
         p2ReadyToFire = true
     })
 
