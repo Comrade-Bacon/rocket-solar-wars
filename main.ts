@@ -235,7 +235,7 @@ mp.onButtonEvent(mp.MultiplayerButton.A, ControllerButtonEvent.Pressed, function
 
 if (player.getProperty(mp.PlayerProperty.Number) == 1 && p1ReadyToFire == true) { // if player one shot and cooldown is not active
     
-    
+
     music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
 
     p1Bullet = sprites.createProjectileFromSprite(assets.image`p1Shot`,mp.getPlayerSprite(player) , p1shotvlsty, 0) // shoot a projectile from player 1
@@ -248,6 +248,8 @@ if (player.getProperty(mp.PlayerProperty.Number) == 1 && p1ReadyToFire == true) 
     })
 
 } else if (player.getProperty(mp.PlayerProperty.Number) == 2 && p2ReadyToFire == true){ // if player 2 shot and cooldown is not active
+        
+    music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
     
     p2Bullet = sprites.createProjectileFromSprite(assets.image`p2Shot`, mp.getPlayerSprite(player), p2Shotvlsty, 0) // shoot a projectile from player 2
     p2Bullet.setFlag(SpriteFlag.AutoDestroy, true) // atomaticly destroy projectile onc it leaves the screen
