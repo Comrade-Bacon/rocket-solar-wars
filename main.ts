@@ -27,6 +27,9 @@ let isPlyin: boolean = false // is a game running (is the menue open)
 let maxScore: number = 5 // the maximum score that you can get before the game ends
 let backmusic: string = 'on'
 
+let p2conected = 'disconected'
+
+
 
 //player variables
 let p1 = mp.playerSelector(mp.PlayerNumber.One)
@@ -47,13 +50,14 @@ let p2Speed: number = 100 // speed the player teo ship moces at
 
     // sprite variables
 let pwrupmesage: any = null // the text that indicates a power up
+let p1cnct: any = null
+let p2cnct: any = null
 
 let p1Bullet: Sprite = null // variable to hold the plyer one bullet sprite
 let p2Bullet: Sprite = null // variable to hold the plyer two bullet sprite
 
 let p1Sprite: any = mp.getPlayerSprite(p1) // player one's sprite
 let p2Sprite: any = mp.getPlayerSprite(p2) // player two's sprite
-
 
         // sprite related variables
 let curntPwrUp: String =  'none'
@@ -70,8 +74,53 @@ if (speedPwrUpMltplr && !(speedPwrUpMltplr == 0 || null)) {
     p2speedprupltplr = speedPwrUpMltplr
 }
 
+if (mp.isConnected(p2) == true) {
+    p2conected = 'conected'
+}
+
+mp.onControllerEvent(ControllerEvent.Connected, function(player: mp.Player) {
+    if (player == p2) {
+        p2conected = 'conected'
+    }
+})
+
+mp.onControllerEvent(ControllerEvent.Disconnected, function (player: mp.Player) {
+    if (player == p2) {
+        p2conected = 'Disconnected'
+    }
+})
+
+
 // main menue set up
 function mainMenue() {
+scene.setBackgroundColor(2)
+color.setColor(3, color.rgb(21, 75, 146))
+color.setColor(2, color.rgb(65,91,135))
+
+
+if (p1cnct) { p1cnct.destroy()} if (p2cnct) {p2cnct.destroy()}
+p1cnct = textsprite.create('Player 1 conected')
+p1cnct.setPosition(80,15)
+p2cnct = textsprite.create(`Player 2 ${p2conected}`)
+p2cnct.setPosition(80,30)
+
+    mp.onControllerEvent(ControllerEvent.Connected, function (player: mp.Player) {
+        if (player == p2) {
+            p2conected = 'conected'
+            p2cnct.destroy()
+            p2cnct = textsprite.create(`Player 2 ${p2conected}`)
+            mainMenue()
+        }
+    })
+
+    mp.onControllerEvent(ControllerEvent.Disconnected, function (player: mp.Player) {
+        if (player == p2) {
+            p2conected = 'Disconnected'
+            p2cnct.destroy()
+            p2cnct = textsprite.create(`Player 2 ${p2conected}`)
+            mainMenue()
+        }
+    })
 
 let player: mp.Player = null
 for (let index = 0; index <= 3; index++) {
@@ -79,7 +128,13 @@ for (let index = 0; index <= 3; index++) {
     if (mp.getPlayerProperty(player, mp.PlayerProperty.Number) == 1) {
             story.showPlayerChoices("Play", "Change Max Score", `Music ${backmusic}`)
     }
-    if (story.getLastAnswer() == 'Play') { isPlyin = true } else if (story.getLastAnswer() == "Change Max Score") {
+    if (story.getLastAnswer() == 'Play') { 
+        color.setColor(3, color.rgb(255, 147, 196))
+        color.setColor(2, color.rgb(255, 33, 33))
+        p1cnct.destroy()
+        p2cnct.destroy()
+        isPlyin = true 
+        } else if (story.getLastAnswer() == "Change Max Score") {
         maxScore = game.askForNumber(`Select max score. Current max score = ${maxScore}`, 3)
         mainMenue()
     } else if (story.getLastAnswer() == `Music ${backmusic}`) {

@@ -200,6 +200,46 @@ ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 . . . . . 6 6 6 6 6 6 6 . . . . . 
 . . . . . . . . . . . . . . . . . 
 `;
+            case "image9":
+            case "shotspeedboost":return img`
+. . . . . . . . . . . . . . . . . 
+. . . . . c c c c c c c . . . . . 
+. . . c c a a a a a a a c c . . . 
+. . c a a a a a a a a a a a c . . 
+. . c a a 5 a 4 a a a 2 a a c . . 
+. c a a 4 a 2 4 4 4 2 1 2 a a c . 
+. c a a a 2 5 4 a a a 2 a a a c . 
+. c a a a a a a a a a a a a a c . 
+. c a a a 2 3 3 3 2 a a a a a c . 
+. c a a 2 3 1 1 1 2 2 2 2 a a c . 
+. c a a 2 1 1 1 1 1 1 1 1 a a c . 
+. c a a 2 3 1 1 1 2 2 2 2 a a c . 
+. . c a a 2 3 3 2 2 a a a a a . . 
+. . c a a a a a a a a a a a c . . 
+. . . c c a a a a a a a c c . . . 
+. . . . . c c c c c c c . . . . . 
+. . . . . . . . . . . . . . . . . 
+`;
+            case "image8":
+            case "shotspeedboostoutln":return img`
+. . . . 5 5 5 5 5 5 5 5 5 . . . . 
+. . . 5 5 c c c c c c c 5 5 . . . 
+. . 5 c c a a a a a a a c c 5 . . 
+. 5 c a a a a a a a a a a a c 5 . 
+5 5 c a a 5 a 4 a a a 2 a a c 5 5 
+5 c a a 4 a 2 4 4 4 2 1 2 a a c 5 
+5 c a a a 2 5 4 a a a 2 a a a c 5 
+5 c a a a a a a a a a a a a a c 5 
+5 c a a a 2 3 3 3 2 a a a a a c 5 
+5 c a a 2 3 1 1 1 2 2 2 2 a a c 5 
+5 c a a 2 1 1 1 1 1 1 1 1 a a c 5 
+5 c a a 2 3 1 1 1 2 2 2 2 a a c 5 
+5 5 c a a 2 3 3 2 2 a a a a a 5 5 
+. 5 c a a a a a a a a a a a c 5 . 
+. . 5 c c a a a a a a a c c 5 . . 
+. . . 5 5 c c c c c c c 5 5 . . . 
+. . . . 5 5 5 5 5 5 5 5 5 . . . . 
+`;
         }
         return null;
     })
