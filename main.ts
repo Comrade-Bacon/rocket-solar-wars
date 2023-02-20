@@ -116,7 +116,7 @@ p2cnct = textsprite.create(`Player 2 ${p2conected}`)
 p2cnct.setPosition(80,30)
 
     mp.onControllerEvent(ControllerEvent.Connected, function (player: mp.Player) {
-        if (player == p2) {
+        if (player == p2 && story.isMenuOpen() == true) {
             p2conected = 'conected'
             p2cnct.destroy()
             p2cnct = textsprite.create(`Player 2 ${p2conected}`)
@@ -344,8 +344,6 @@ mp.onButtonEvent(mp.MultiplayerButton.A, ControllerButtonEvent.Pressed, function
 if (player.getProperty(mp.PlayerProperty.Number) == 1 && p1ReadyToFire == true) { // if player one shot and cooldown is not active
     
 
-    music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
-
     p1Bullet = sprites.createProjectileFromSprite(assets.image`p1Shot`,mp.getPlayerSprite(player) , p1shotvlsty, 0) // shoot a projectile from player 1
     p1Bullet.setFlag(SpriteFlag.AutoDestroy, true) // atomaticly destroy projectile onc it leaves the screen
     
@@ -355,9 +353,11 @@ if (player.getProperty(mp.PlayerProperty.Number) == 1 && p1ReadyToFire == true) 
         p1ReadyToFire = true
     })
 
+    music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
+
 } else if (player.getProperty(mp.PlayerProperty.Number) == 2 && p2ReadyToFire == true){ // if player 2 shot and cooldown is not active
         
-    music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
+   
     
     p2Bullet = sprites.createProjectileFromSprite(assets.image`p2Shot`, mp.getPlayerSprite(player), p2shotvlsty, 0) // shoot a projectile from player 2
     p2Bullet.setFlag(SpriteFlag.AutoDestroy, true) // atomaticly destroy projectile onc it leaves the screen
@@ -367,6 +367,7 @@ if (player.getProperty(mp.PlayerProperty.Number) == 1 && p1ReadyToFire == true) 
     timer.after(p2Shotcooldwn, function () { // Puase will not wrok. it will still shot even if you do not press the space bar
         p2ReadyToFire = true
     })
+    music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
 
 }
 
