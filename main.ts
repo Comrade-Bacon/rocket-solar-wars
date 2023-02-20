@@ -56,6 +56,12 @@ let p2cnct: any = null
 let p1Bullet: Sprite = null // variable to hold the plyer one bullet sprite
 let p2Bullet: Sprite = null // variable to hold the plyer two bullet sprite
 
+let p1Bullet2: Sprite = null // variable to hold the plyer one bullet sprite
+let p2Bullet2: Sprite = null // variable to hold the plyer two bullet sprite
+
+let p1Bullet3: Sprite = null // variable to hold the plyer one bullet sprite
+let p2Bullet3: Sprite = null // variable to hold the plyer two bullet sprite
+
 let p1Sprite: any = mp.getPlayerSprite(p1) // player one's sprite
 let p2Sprite: any = mp.getPlayerSprite(p2) // player two's sprite
 
@@ -68,6 +74,8 @@ let powerUp: Sprite = null
 let speedPwrUpMltplr: number = 2
 let shotvlstymltpyr: number = 2
 
+let p1MultiShot = false
+let p2MultiShot = false
 
 let p1speedprupltplr: number = null
 let p2speedprupltplr: number = null
@@ -196,7 +204,7 @@ function plrSetUp(player: number) {
 function overlaps() {
 
     sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Player2, function (sprite: Sprite, otherSprite: Sprite) {
-        if (!(sprite == p2Bullet)) {
+        if (sprite == p1Bullet || sprite == p1Bullet2 || sprite == p1Bullet3) {
             sprite.destroy()
             otherSprite.destroy(effects.fire, 100)
             mp.changePlayerStateBy(mp.playerSelector(mp.PlayerNumber.One), MultiplayerState.score, 1)
@@ -206,7 +214,7 @@ function overlaps() {
     })
 
     sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Player1, function (sprite: Sprite, otherSprite: Sprite) {
-        if (!(sprite == p1Bullet)) {
+        if (sprite == p2Bullet || sprite == p2Bullet2 || sprite == p2Bullet3) {
             sprite.destroy()
             otherSprite.destroy(effects.fire, 100)
             mp.changePlayerStateBy(mp.playerSelector(mp.PlayerNumber.Two), MultiplayerState.score, 1)
@@ -264,6 +272,24 @@ function overlaps() {
                 pwrupmesage.destroy()
             })
 
+        } else if (curntPwrUp == 'multiShoot' && sprite == p1Bullet) {
+            pwrupmesage = textsprite.create('P1 Muli-Shot!')
+            pwrupmesage.setPosition(80, 15)
+            p1MultiShot = true
+
+            timer.debounce('action', 5000, function () {
+                p1MultiShot = false
+                pwrupmesage.destroy()
+            })
+        } else if (curntPwrUp == 'multiShoot' && sprite == p2Bullet) {
+            pwrupmesage = textsprite.create('P2 Muli-Shot!')
+            pwrupmesage.setPosition(80, 15)
+            p2MultiShot = true
+
+            timer.debounce('action', 5000, function () {
+                p2MultiShot = false
+                pwrupmesage.destroy()
+            })
         }
     })
 }
@@ -272,7 +298,7 @@ function overlaps() {
 function powerUps() {
     timer.debounce('action', 5000, function() {
         game.onUpdateInterval(12000, function() {
-            let num = Math.randomRange(1,2)
+            let num = Math.randomRange(1,3)
             console.log(num)
             if (num == 1) {
                 powerUp = sprites.create(assets.image`speedpwrup`, SpriteKind.PowerUp)
@@ -307,6 +333,25 @@ function powerUps() {
                             powerUp.setImage(assets.image`shotspeedboostoutln`)
                             pause(150)
                            powerUp.setImage(assets.image`shotspeedboost`)
+                            pause(150)
+                        }
+                    }
+                    powerUp.destroy()
+                })
+                } else if (num == 3) {
+                powerUp = sprites.create(assets.image`multiShot`, SpriteKind.PowerUp)
+                powerUp.setPosition(Math.randomRange(40, 120), Math.randomRange(20, 100))
+                curntPwrUp = 'multiShoot'
+
+                timer.debounce("action", 5000, function () {
+
+                    for (let i = 0; i < 5; i++) {
+                        flash()
+
+                        function flash() {
+                           powerUp.setImage(assets.image`multiShotoutln`)
+                            pause(150)
+                      powerUp.setImage(assets.image`multiShot`)
                             pause(150)
                         }
                     }
@@ -347,6 +392,13 @@ if (player.getProperty(mp.PlayerProperty.Number) == 1 && p1ReadyToFire == true) 
     p1Bullet = sprites.createProjectileFromSprite(assets.image`p1Shot`,mp.getPlayerSprite(player) , p1shotvlsty, 0) // shoot a projectile from player 1
     p1Bullet.setFlag(SpriteFlag.AutoDestroy, true) // atomaticly destroy projectile onc it leaves the screen
     
+    if (p1MultiShot == true) {
+        p1Bullet2 = sprites.createProjectileFromSprite(assets.image`p1Shot`, mp.getPlayerSprite(player), p1shotvlsty, 50) // shoot a projectile from player 1
+        p1Bullet.setFlag(SpriteFlag.AutoDestroy, true) // atomaticly destroy projectile onc it leaves the screen
+        p1Bullet3 = sprites.createProjectileFromSprite(assets.image`p1Shot`, mp.getPlayerSprite(player), p1shotvlsty, -50) // shoot a projectile from player 1
+        p1Bullet.setFlag(SpriteFlag.AutoDestroy, true) // atomaticly destroy projectile onc it leaves the screen
+    }
+
     //shot cooldown
     p1ReadyToFire = false
     timer.after(p1shotcooldwn, function () { // Puase will not wrok. it will still shot even if you do not press the space bar
@@ -362,6 +414,13 @@ if (player.getProperty(mp.PlayerProperty.Number) == 1 && p1ReadyToFire == true) 
     p2Bullet = sprites.createProjectileFromSprite(assets.image`p2Shot`, mp.getPlayerSprite(player), p2shotvlsty, 0) // shoot a projectile from player 2
     p2Bullet.setFlag(SpriteFlag.AutoDestroy, true) // atomaticly destroy projectile onc it leaves the screen
     
+    if (p2MultiShot == true) {
+        p2Bullet2 = sprites.createProjectileFromSprite(assets.image`p2Shot`, mp.getPlayerSprite(player), p2shotvlsty, 50) // shoot a projectile from player 2
+        p2Bullet.setFlag(SpriteFlag.AutoDestroy, true) // atomaticly destroy projectile onc it leaves the screen
+        p2Bullet3 = sprites.createProjectileFromSprite(assets.image`p2Shot`, mp.getPlayerSprite(player), p2shotvlsty, -50) // shoot a projectile from player 2
+        p2Bullet.setFlag(SpriteFlag.AutoDestroy, true) // atomaticly destroy projectile onc it leaves the screen
+    }
+
     // shot cooldown
     p2ReadyToFire = false
     timer.after(p2Shotcooldwn, function () { // Puase will not wrok. it will still shot even if you do not press the space bar
