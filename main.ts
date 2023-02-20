@@ -42,7 +42,7 @@ let p1shotcooldwn: number = 400 // player 1 cool down between shots
 let p2Shotcooldwn: number = 400 // player 2 cool down between shots
 
 let p1shotvlsty: number = 200 // speed of player one shot
-let p2Shotvlsty: number = -200 // speed of player two shot
+let p2shotvlsty: number = -200 // speed of player two shot
 
 let p1Speed: number = 100 // speed the player one ship moves at
 let p2Speed: number = 100 // speed the player teo ship moces at
@@ -66,12 +66,23 @@ let powerUp: Sprite = null
 
     // power up variables
 let speedPwrUpMltplr: number = 2
+let shotvlstymltpyr: number = 2
+
 
 let p1speedprupltplr: number = null
 let p2speedprupltplr: number = null
+
+let p1shotvlstymltpyr: number = null
+let p2shotvlstymltpyr: number = null
+
+
 if (speedPwrUpMltplr && !(speedPwrUpMltplr == 0 || null)) {
     p1speedprupltplr = speedPwrUpMltplr
     p2speedprupltplr = speedPwrUpMltplr
+}
+if (speedPwrUpMltplr && !(speedPwrUpMltplr == 0 || null)) {
+    p1shotvlstymltpyr = shotvlstymltpyr
+    p2shotvlstymltpyr = shotvlstymltpyr
 }
 
 if (mp.isConnected(p2) == true) {
@@ -233,6 +244,26 @@ function overlaps() {
                 mp.moveWithButtons(p2, 0, p2Speed)
                 pwrupmesage.destroy()
             })
+        } else if (curntPwrUp == 'Shootvlsty' && sprite == p1Bullet) {
+            pwrupmesage = textsprite.create('P1 bullet speed boost!')
+            pwrupmesage.setPosition(80,15)
+            p1shotvlsty = p1shotvlsty * p1shotvlstymltpyr
+
+            timer.debounce('action', 5000, function () {
+                p1shotvlsty = p1shotvlsty / p1shotvlstymltpyr
+                pwrupmesage.destroy()
+            })
+            
+        } else if (curntPwrUp == 'Shootvlsty' && sprite == p2Bullet) {
+            pwrupmesage = textsprite.create('P2 bullet speed boost!')
+            pwrupmesage.setPosition(80, 15)
+            p2shotvlsty = p2shotvlsty * p2shotvlstymltpyr
+
+            timer.debounce('action', 5000, function () {
+                p2shotvlsty = p2shotvlsty / p2shotvlstymltpyr
+                pwrupmesage.destroy()
+            })
+
         }
     })
 }
@@ -241,25 +272,47 @@ function overlaps() {
 function powerUps() {
     timer.debounce('action', 5000, function() {
         game.onUpdateInterval(12000, function() {
+            let num = Math.randomRange(1,2)
+            console.log(num)
+            if (num == 1) {
+                powerUp = sprites.create(assets.image`speedpwrup`, SpriteKind.PowerUp)
+                powerUp.setPosition(Math.randomRange(40, 120), Math.randomRange(20, 100))
+                curntPwrUp = 'Speed'
 
-            powerUp = sprites.create(assets.image`speedpwrup`, SpriteKind.PowerUp)
-            powerUp.setPosition(Math.randomRange(40, 120), Math.randomRange(20, 100))
-            curntPwrUp = 'Speed'
+                timer.debounce("action", 5000, function() {
 
-            timer.debounce("action", 5000, function() {
+                    for (let i = 0; i < 5; i++) {
+                        flash()
 
-                for (let i = 0; i < 5; i++) {
-                    flash()
-
-                    function flash (){
-                        powerUp.setImage(assets.image`speedpwrupoutlin`)
-                        pause(150)
-                        powerUp.setImage(assets.image`speedpwrup`)
-                        pause(150)
+                        function flash (){
+                            powerUp.setImage(assets.image`speedpwrupoutlin`)
+                            pause(150)
+                            powerUp.setImage(assets.image`speedpwrup`)
+                            pause(150)
+                        }
                     }
+                    powerUp.destroy()
+                })
+                } else if (num == 2) {
+                powerUp = sprites.create(assets.image`shotspeedboost`, SpriteKind.PowerUp)
+                powerUp.setPosition(Math.randomRange(40, 120), Math.randomRange(20, 100))
+                curntPwrUp = 'Shootvlsty'
+
+                timer.debounce("action", 5000, function () {
+
+                    for (let i = 0; i < 5; i++) {
+                        flash()
+
+                        function flash() {
+                            powerUp.setImage(assets.image`shotspeedboostoutln`)
+                            pause(150)
+                           powerUp.setImage(assets.image`shotspeedboost`)
+                            pause(150)
+                        }
+                    }
+                    powerUp.destroy()
+                })
                 }
-                powerUp.destroy()
-            })
         })
     })
 }
@@ -306,7 +359,7 @@ if (player.getProperty(mp.PlayerProperty.Number) == 1 && p1ReadyToFire == true) 
         
     music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
     
-    p2Bullet = sprites.createProjectileFromSprite(assets.image`p2Shot`, mp.getPlayerSprite(player), p2Shotvlsty, 0) // shoot a projectile from player 2
+    p2Bullet = sprites.createProjectileFromSprite(assets.image`p2Shot`, mp.getPlayerSprite(player), p2shotvlsty, 0) // shoot a projectile from player 2
     p2Bullet.setFlag(SpriteFlag.AutoDestroy, true) // atomaticly destroy projectile onc it leaves the screen
     
     // shot cooldown
