@@ -18,7 +18,7 @@ namespace SpriteKind {
     export const PowerUp = SpriteKind.create() // set up power up sprite kind
 }
 
-
+// test
 
 // Global variables
 
